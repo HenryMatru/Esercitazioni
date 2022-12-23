@@ -15,9 +15,11 @@ import java.sql.SQLException;
 @WebServlet(name = "ServletInserUser", value = "/ServletInserUser")
 public class ServletInserUser extends HttpServlet {
     private UserDAO userDAO;
+
     public void init() {
         userDAO = new UserDAO();
     }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("insert_user.jsp");
@@ -34,9 +36,13 @@ public class ServletInserUser extends HttpServlet {
         try {
             userDAO.insertUser(newUser);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            // throw new RuntimeException(e);
+            request.setAttribute("errore", e.getMessage());
+            response.sendRedirect("error.jsp");
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            // throw new RuntimeException(e);
+            request.setAttribute("errore", e.getMessage());
+            response.sendRedirect("error.jsp");
         }
         request.setAttribute("utente-inserito", "Il nuovo utente e' stato inserito");
         response.sendRedirect("insert_user.jsp");

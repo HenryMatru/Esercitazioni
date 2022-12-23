@@ -30,7 +30,9 @@ public class ServletDeleteUser extends HttpServlet {
         try {
             userDAO.deleteUser(id);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            // throw new RuntimeException(e);
+            request.setAttribute("errore", e.getMessage());
+            response.sendRedirect("error.jsp");
         }
         response.sendRedirect("index.jsp");
     }
